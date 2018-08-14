@@ -3,10 +3,10 @@ package com.prashant.examples.books;
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book implements Serializable{
 
 	/**
@@ -18,12 +18,12 @@ public class Book implements Serializable{
 	private Integer totalItems ;
 	
 	@JsonProperty("items")
-	private List<Volumes> items = null;
+	private List<Item> items = null;
 	public Book() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Book(Integer totalItems, List<Volumes> items) {
+	public Book(Integer totalItems, List<Item> items) {
 		super();
 		this.totalItems = totalItems;
 		this.items = items;
@@ -36,12 +36,12 @@ public class Book implements Serializable{
 	}
 	
 	@JsonProperty("items")
-	public List<Volumes> getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 	
 	@JsonProperty("items")
-	public void setItems(List<Volumes> items) {
+	public void setItems(List<Item> items) {
 		this.items = items;
 	}
 	@Override

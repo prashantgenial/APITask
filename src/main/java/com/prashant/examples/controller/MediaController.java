@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.prashant.examples.APIExceptionDetaile;
 import com.prashant.examples.APINotFoundException;
-import com.prashant.examples.books.Book;
+import com.prashant.examples.client.books.Book;
 import com.prashant.examples.client.itunes.Track;
 
 @RestController

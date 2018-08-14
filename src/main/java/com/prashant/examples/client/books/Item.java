@@ -1,4 +1,4 @@
-package com.prashant.examples.books;
+package com.prashant.examples.client.books;
 
 import java.io.Serializable;
 

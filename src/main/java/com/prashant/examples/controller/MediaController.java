@@ -28,9 +28,9 @@ import com.prashant.examples.books.Book;
 import com.prashant.examples.client.itunes.Track;
 
 @RestController
-public class Media {
+public class MediaController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Media.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MediaController.class);
 	
 	@Value("${books.record.count}")
 	private Integer records;
@@ -47,13 +47,13 @@ public class Media {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET,value="/track")
-	public Track getTracks( @RequestParam(value="str") String str) throws APINotFoundException {
+	public Track getTracks( @RequestParam(value="input") String input) throws APINotFoundException {
 		
-		if (StringUtils.isEmpty(str)) 
-		      throw new APINotFoundException("Please Enter valid input"+" "+"str"+"--"+str+" "+"not present");
+		if (StringUtils.isEmpty(input)) 
+		      throw new APINotFoundException("Please Enter valid input"+" "+"input"+"--"+input+" "+"not present");
 		
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "https://itunes.apple.com/search?term="+str+"&limit="+records;
+		String url = "https://itunes.apple.com/search?term="+input+"&limit="+records;
 		
 		 List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
         //Add the Jackson Message converter

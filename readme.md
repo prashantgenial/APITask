@@ -28,3 +28,13 @@ Make sure the service:
 
 
 The stability of the downstream service may not be affected by the stability of the upstream services.
+
+How to run this project:
+
+clone the project : 
+either download the project by clicking clone/download button  
+OR
+open git bash (if git is installed on your machine)
+git clone https://github.com/prashantgenial/APITask
+
+http://localhost:9191/media?input=

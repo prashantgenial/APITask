@@ -2,21 +2,27 @@ package com.prashant.examples.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.prashant.examples.APIExceptionDetaile;
 import com.prashant.examples.APINotFoundException;
 import com.prashant.examples.books.Book;
 import com.prashant.examples.client.itunes.Track;
@@ -43,8 +49,8 @@ public class Media {
 	@RequestMapping(method=RequestMethod.GET,value="/track")
 	public Track getTracks( @RequestParam(value="str") String str) throws APINotFoundException {
 		
-		/*if (!StringUtils.isEmpty(input)) 
-		      throw new APINotFoundException("Please Enter valid input"+" "+"input"+"--"+input+" "+"not present");*/
+		if (StringUtils.isEmpty(str)) 
+		      throw new APINotFoundException("Please Enter valid input"+" "+"str"+"--"+str+" "+"not present");
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "https://itunes.apple.com/search?term="+str+"&limit="+records;
@@ -71,13 +77,13 @@ public class Media {
         return track;
 	}
 	
-	/*@ExceptionHandler(MissingServletRequestParameterException.class)
+	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ResponseEntity<APIExceptionDetaile> handleMissingParams(MissingServletRequestParameterException ex) {
 	    String name = ex.getParameterName();
 	    System.out.println(name + " parameter is missing");
 	    APIExceptionDetaile errorDetails = new APIExceptionDetaile(new Date(), ex.getMessage(),
 	            ex.getParameterName() + " is required.");
 	        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-	}*/
+	}
 }
 

@@ -4,8 +4,10 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +25,17 @@ public class Media {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Media.class);
 	
+	@Value("${books.record.count}")
+	private Integer records;
+	
 	@RequestMapping(method=RequestMethod.GET,value="/media")
 	public Book getMedia1( @RequestParam(value="input") String input) throws APINotFoundException {
 		
-		if (input==null) 
+		if (StringUtils.isEmpty(input)) 
 		      throw new APINotFoundException("Please Enter valid input"+" "+"input"+"--"+input+" "+"not present");
+		
 		RestTemplate restTemplate = new RestTemplate();
-		 Book book = restTemplate.getForObject("https://www.googleapis.com/books/v1/volumes?q="+input, Book.class); 
+		Book book = restTemplate.getForObject("https://www.googleapis.com/books/v1/volumes?q="+input+"&maxResults="+records, Book.class); 
         return book;
 	}
 	

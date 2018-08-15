@@ -1,4 +1,4 @@
-package com.prashant.examples;
+package com.prashant.examples.exception;
 
 import java.util.Date;
 

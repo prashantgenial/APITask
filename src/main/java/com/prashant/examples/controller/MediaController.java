@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.prashant.examples.APIExceptionDetaile;
-import com.prashant.examples.APINotFoundException;
+import com.prashant.examples.MediaDownloader;
 import com.prashant.examples.client.books.Book;
 import com.prashant.examples.client.itunes.Track;
+import com.prashant.examples.exception.APIExceptionDetaile;
+import com.prashant.examples.exception.APINotFoundException;
+import com.prashant.examples.model.Media;
 
 @RestController
 public class MediaController {
@@ -35,48 +37,17 @@ public class MediaController {
 	@Value("${books.record.count}")
 	private Integer records;
 	
-	@RequestMapping(method=RequestMethod.GET,value="/media")
-	public Book getMedia1( @RequestParam(value="input") String input) throws APINotFoundException {
+	@RequestMapping(method=RequestMethod.GET,value="/media1")
+	public List<Media> getMedia( @RequestParam(value="input") String input) throws APINotFoundException {
 		
 		if (StringUtils.isEmpty(input)) 
 		      throw new APINotFoundException("Please Enter valid input"+" "+"input"+"--"+input+" "+"not present");
 		
-		RestTemplate restTemplate = new RestTemplate();
-		Book book = restTemplate.getForObject("https://www.googleapis.com/books/v1/volumes?q="+input+"&maxResults="+records, Book.class); 
-        return book;
-	}
-	
-	@RequestMapping(method=RequestMethod.GET,value="/track")
-	public Track getTracks( @RequestParam(value="input") String input) throws APINotFoundException {
+		MediaDownloader md = new MediaDownloader();
+		return md.go(input,records);		
 		
-		if (StringUtils.isEmpty(input)) 
-		      throw new APINotFoundException("Please Enter valid input"+" "+"input"+"--"+input+" "+"not present");
+	}	
 		
-		RestTemplate restTemplate = new RestTemplate();
-		String url = "https://itunes.apple.com/search?term="+input+"&limit="+records;
-		
-		 List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
-        //Add the Jackson Message converter
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		// Note: here we are making this converter to process any kind of response, 
-		// not only application/*json, which is the default behaviour
-		converter.setSupportedMediaTypes(Arrays.asList(MediaType.ALL));
-		
-		messageConverters.add(converter);  
-		restTemplate.setMessageConverters(messageConverters);  
-		
-		/*HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
-
-		ResponseEntity<Track> track = restTemplate.exchange(url, HttpMethod.POST, entity, Track.class);*/
-		Track track = restTemplate.getForObject(url, Track.class);
-		LOGGER.info(track.toString());
-        return track;
-	}
-	
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ResponseEntity<APIExceptionDetaile> handleMissingParams(MissingServletRequestParameterException ex) {
 	    String name = ex.getParameterName();

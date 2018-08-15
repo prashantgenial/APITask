@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import com.prashant.examples.APINotFoundException;
-import com.prashant.examples.APIExceptionDetaile;
+
+import com.prashant.examples.exception.APIExceptionDetaile;
+import com.prashant.examples.exception.APINotFoundException;
 
 
 @ControllerAdvice

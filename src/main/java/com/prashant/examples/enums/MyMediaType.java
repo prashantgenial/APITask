@@ -1,5 +1,5 @@
 package com.prashant.examples.enums;
 
-public enum MediaType {
+public enum MyMediaType {
 BOOK,SONG
 }

@@ -1,19 +1,19 @@
 package com.prashant.examples.model;
 
-import com.prashant.examples.enums.MediaType;
+import com.prashant.examples.enums.MyMediaType;
 
 public class Media {
 
 	private String title ;
 	private String author;
-	private MediaType mediaType ;
+	private MyMediaType mediaType ;
 	
 	public Media() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Media(String title, String author, MediaType mediaType) {
+	public Media(String title, String author, MyMediaType mediaType) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -32,10 +32,10 @@ public class Media {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public MediaType getMediaType() {
+	public MyMediaType getMediaType() {
 		return mediaType;
 	}
-	public void setMediaType(MediaType mediaType) {
+	public void setMediaType(MyMediaType mediaType) {
 		this.mediaType = mediaType;
 	}
 	@Override

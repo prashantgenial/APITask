@@ -18,29 +18,48 @@ API
 	 - Your service needs to respond within 3 seconds. [Multithreading with callable interface]
  
 Make sure the service:
-10 - is self-documenting [Add Swagger]
-11 - exposes metrics on response times for upstream services
-12 - exposes health check [Add accuator]
-13 - Limit of results on upstream services must be configurable per environment and preconfigured to 5. [Add in Application.properties]
-14 - Add the security mechanism to authenticate and authorize the service for added security. [JWT Token]
-15 - document how we can run it. [GIT]
-16 - document your justification of technology / mechanism choice.
+8 - is self-documenting [Add Swagger]
+9 - exposes metrics on response times for upstream services
+10 - exposes health check [Add accuator]
+11 - Limit of results on upstream services must be configurable per environment and preconfigured to 5. [Add in Application.properties]
+12 - Add the security mechanism to authenticate and authorize the service for added security. [JWT Token]
+13 - document how we can run it. [GIT]
+14 - document your justification of technology / mechanism choice.
 
 
 The stability of the downstream service may not be affected by the stability of the upstream services.
 
 How to run this project:
 
-clone the project : 
-either download the project by clicking clone/download button  
-OR
-open git bash (if git is installed on your machine)
-git clone https://github.com/prashantgenial/APITask
+1.
+clone the project : either download the project by clicking clone/download button  
+OR open git bash (if git is installed on your machine) git clone https://github.com/prashantgenial/APITask
 
-http://localhost:9191/media?input=
+2. open a command prompt and go to the root directory project
+3. compile "mvn clean package"
+4. run "java -jar target/APITask-0.0.1-SNAPSHOT.jar"
+or
+run "java -jar target/APITask-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev"
 
+6. open postman and run below URL
+
+http://localhost:9191/media?input=road
+
+Response recieved :
+
+{
+    "timestamp": "2018-08-16T09:40:51.013+0000",
+    "status": 403,
+    "error": "Forbidden",
+    "message": "Access Denied",
+    "path": "/media"
+}
+
+this service is accessible a secure token only, so first lets generate a token.
+6.
 To Access the Health Status of the API:
 http://localhost:9191/actuator/health
 
 POST localhost:9191/login
 {"username":"admin","password":"password"} 
+

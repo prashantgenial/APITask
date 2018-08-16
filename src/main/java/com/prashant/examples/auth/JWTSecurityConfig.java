@@ -1,5 +1,6 @@
 package com.prashant.examples.auth;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,6 +15,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable().authorizeRequests()
+    	.requestMatchers(EndpointRequest.to("health")).permitAll()
         .antMatchers("/").permitAll()
         .antMatchers(HttpMethod.POST, "/login").permitAll()
         .anyRequest().authenticated()

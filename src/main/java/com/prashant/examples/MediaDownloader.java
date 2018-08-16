@@ -85,8 +85,9 @@ public class MediaDownloader {
 			Book book = bookFuture.get(TIME_FRAME, TimeUnit.NANOSECONDS);
 			List<Item> items = book.getItems();
 			for(Item item: items) {
-				if(!StringUtils.isEmpty(item.getVolumeInfo().getTitle()) && !StringUtils.isEmpty(item.getVolumeInfo().getAuthors()))
-					medias.add(new Media(item.getVolumeInfo().getTitle(),item.getVolumeInfo().getAuthors().get(0),MyMediaType.BOOK));
+				Media m1 = new Media(item.getVolumeInfo().getTitle(),item.getVolumeInfo().getAuthors().get(0),MyMediaType.BOOK);
+				if(!StringUtils.isEmpty(item.getVolumeInfo().getTitle()) && !StringUtils.isEmpty(item.getVolumeInfo().getAuthors()) && !medias.equals(m1))
+					medias.add(m1);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -101,8 +102,9 @@ public class MediaDownloader {
 			Track track = trackFuture.get(TIME_FRAME, TimeUnit.NANOSECONDS);
 			List<Result> results = track.getResults();
 			for(Result result: results) {
-				if(!StringUtils.isEmpty(result.getTrackName()) && !StringUtils.isEmpty(result.getArtistName()))
-					medias.add(new Media(result.getTrackName(),result.getArtistName(),MyMediaType.SONG));	
+				Media m2 = new Media(result.getTrackName(),result.getArtistName(),MyMediaType.SONG);
+				if(!StringUtils.isEmpty(result.getTrackName()) && !StringUtils.isEmpty(result.getArtistName()) && !medias.equals(m2))
+					medias.add(m2);	
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

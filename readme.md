@@ -41,3 +41,6 @@ http://localhost:9191/media?input=
 
 To Access the Health Status of the API:
 http://localhost:9191/actuator/health
+
+POST localhost:9191/login
+{"username":"admin","password":"password"} 

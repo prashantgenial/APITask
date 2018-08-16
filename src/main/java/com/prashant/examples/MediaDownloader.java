@@ -2,6 +2,8 @@ package com.prashant.examples;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -113,7 +115,13 @@ public class MediaDownloader {
 
 		executor.shutdown();
 		
-		return medias;
-	}
+		Collections.sort(medias,new Comparator<Media>(){
+      	  public int compare(Media p1, Media p2){
+  		    return p1.getTitle().compareTo(p2.getTitle());
+  		  }
+  		}); 
+		
+	 return medias;
 
+}
 }

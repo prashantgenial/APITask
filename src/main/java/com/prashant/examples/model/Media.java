@@ -2,7 +2,7 @@ package com.prashant.examples.model;
 
 import com.prashant.examples.enums.MyMediaType;
 
-public class Media {
+public class Media  {
 
 	private String title ;
 	private String author;
@@ -74,7 +74,8 @@ public class Media {
 			return false;
 		return true;
 	}
-	
+
+
 	
 	
 }

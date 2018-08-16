@@ -82,7 +82,7 @@ public class MediaDownloader {
 
 	
 	public List<Media> go(String input,Integer records) {
-		List<Media> medias = new ArrayList<>();
+		List<Media> medias = new ArrayList<>(2*records);
 		List<Future<List<Media>>> futures = new ArrayList<>();
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.BOOK)));
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.SONG)));

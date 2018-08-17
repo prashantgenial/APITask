@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -25,11 +27,15 @@ import com.prashant.examples.client.itunes.Track;
 import com.prashant.examples.enums.MyMediaType;
 import com.prashant.examples.model.Media;
 
+@Configuration
+@PropertySource("classpath:application.properties")
 public class MediaDownloader {
 
 	private final ExecutorService executor = Executors.newFixedThreadPool(2);
 		
 	private static final long TIME_FRAME = 2000000000L; // 2 seconds
+	private static final String TRACKURL = "https://itunes.apple.com/search";
+	private static final String BOOKURL = "https://www.googleapis.com/books/v1/volumes";
 	
 	private static class Downloader implements Callable<List<Media>> {
 		private String input ;
@@ -48,9 +54,9 @@ public class MediaDownloader {
 		}
 		
 		private List<Media> getBook(){
-			List<Media> medias = new ArrayList<>();
+			List<Media> medias = new ArrayList<>(records);
 			RestTemplate restTemplate = new RestTemplate();
-			Book book = restTemplate.getForObject("https://www.googleapis.com/books/v1/volumes?q="+this.input+"&maxResults="+this.records, Book.class); 
+			Book book = restTemplate.getForObject(BOOKURL+"?q="+this.input+"&maxResults="+this.records, Book.class); 
 			List<Item> items = book.getItems();
 			items.forEach(item -> {
 				if(!StringUtils.isEmpty(item.getVolumeInfo().getTitle()) && !StringUtils.isEmpty(item.getVolumeInfo().getAuthors()))
@@ -61,15 +67,14 @@ public class MediaDownloader {
 		}
 		
 		private List<Media> getTracks(){
-			List<Media> medias = new ArrayList<>();
+			List<Media> medias = new ArrayList<>(records);
 			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://itunes.apple.com/search?term="+this.input+"&limit="+this.records;
 			List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
 	        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 			converter.setSupportedMediaTypes(Arrays.asList(MediaType.ALL));		
 			messageConverters.add(converter);  
 			restTemplate.setMessageConverters(messageConverters);  
-			Track track = restTemplate.getForObject(url, Track.class);
+			Track track = restTemplate.getForObject(TRACKURL + "?term="+this.input+"&limit="+this.records, Track.class);
 			List<Result> results = track.getResults();
 			results.forEach(result -> {
 				if(!StringUtils.isEmpty(result.getTrackName()) && !StringUtils.isEmpty(result.getArtistName()))
@@ -82,7 +87,7 @@ public class MediaDownloader {
 
 	
 	public List<Media> go(String input,Integer records) {
-		List<Media> medias = new ArrayList<>(10);
+		List<Media> medias = new ArrayList<>(2*records);
 		List<Future<List<Media>>> futures = new ArrayList<>();
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.BOOK)));
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.SONG)));

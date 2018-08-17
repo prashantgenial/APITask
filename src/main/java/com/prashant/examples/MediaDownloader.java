@@ -52,11 +52,11 @@ public class MediaDownloader {
 			RestTemplate restTemplate = new RestTemplate();
 			Book book = restTemplate.getForObject("https://www.googleapis.com/books/v1/volumes?q="+this.input+"&maxResults="+this.records, Book.class); 
 			List<Item> items = book.getItems();
-			for(Item item: items) {
-				//Media m1 = new Media(item.getVolumeInfo().getTitle(),item.getVolumeInfo().getAuthors().get(0),MyMediaType.BOOK);
+			items.forEach(item -> {
 				if(!StringUtils.isEmpty(item.getVolumeInfo().getTitle()) && !StringUtils.isEmpty(item.getVolumeInfo().getAuthors()))
 					medias.add(new Media(item.getVolumeInfo().getTitle(),item.getVolumeInfo().getAuthors().get(0),MyMediaType.BOOK));
-			}
+				}
+			);			
 	        return medias;
 		}
 		
@@ -71,18 +71,18 @@ public class MediaDownloader {
 			restTemplate.setMessageConverters(messageConverters);  
 			Track track = restTemplate.getForObject(url, Track.class);
 			List<Result> results = track.getResults();
-			for(Result result: results) {
-				//Media m2 = new Media(result.getTrackName(),result.getArtistName(),MyMediaType.SONG);
+			results.forEach(result -> {
 				if(!StringUtils.isEmpty(result.getTrackName()) && !StringUtils.isEmpty(result.getArtistName()))
-					medias.add(new Media(result.getTrackName(),result.getArtistName(),MyMediaType.SONG));	
-			}
+					medias.add(new Media(result.getTrackName(),result.getArtistName(),MyMediaType.SONG));
+				}
+			);
 			return medias;
 		}
 	}
 
 	
 	public List<Media> go(String input,Integer records) {
-		List<Media> medias = new ArrayList<>(2*records);
+		List<Media> medias = new ArrayList<>(10);
 		List<Future<List<Media>>> futures = new ArrayList<>();
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.BOOK)));
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.SONG)));

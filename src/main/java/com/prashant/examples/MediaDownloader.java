@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -31,8 +29,6 @@ import com.prashant.examples.client.itunes.Track;
 import com.prashant.examples.enums.MyMediaType;
 import com.prashant.examples.model.Media;
 
-@Configuration
-@PropertySource("classpath:application.properties")
 public class MediaDownloader {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(MediaDownloader.class);

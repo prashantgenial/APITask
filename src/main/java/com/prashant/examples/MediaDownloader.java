@@ -1,5 +1,7 @@
 package com.prashant.examples;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
@@ -31,6 +35,7 @@ import com.prashant.examples.model.Media;
 @PropertySource("classpath:application.properties")
 public class MediaDownloader {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(MediaDownloader.class);
 	private final ExecutorService executor = Executors.newFixedThreadPool(2);
 		
 	private static final long TIME_FRAME = 2000000000L; // 2 seconds
@@ -56,9 +61,15 @@ public class MediaDownloader {
 		private List<Media> getBook(){
 			List<Media> medias = new ArrayList<>(records);
 			RestTemplate restTemplate = new RestTemplate();
-			Book book = restTemplate.getForObject(BOOKURL+"?q="+this.input+"&maxResults="+this.records, Book.class); 
-			List<Item> items = book.getItems();
-			items.forEach(item -> {
+			
+			 Instant startTime = Instant.now(); 
+			 Book book = restTemplate.getForObject(BOOKURL+"?q="+this.input+"&maxResults="+this.records, Book.class);
+			 Instant endTime = Instant.now(); 
+			 Duration timeElapsed =	 Duration.between(startTime, endTime); 
+			 LOGGER.info("timeElapsed in Books ms: " + timeElapsed.toMillis());
+			
+			 List<Item> items = book.getItems();
+			 items.forEach(item -> {
 				if(!StringUtils.isEmpty(item.getVolumeInfo().getTitle()) && !StringUtils.isEmpty(item.getVolumeInfo().getAuthors()))
 					medias.add(new Media(item.getVolumeInfo().getTitle(),item.getVolumeInfo().getAuthors().get(0),MyMediaType.BOOK));
 				}
@@ -74,7 +85,13 @@ public class MediaDownloader {
 			converter.setSupportedMediaTypes(Arrays.asList(MediaType.ALL));		
 			messageConverters.add(converter);  
 			restTemplate.setMessageConverters(messageConverters);  
-			Track track = restTemplate.getForObject(TRACKURL + "?term="+this.input+"&limit="+this.records, Track.class);
+			
+			 Instant startTime = Instant.now(); 
+			 Track track = restTemplate.getForObject(TRACKURL + "?term="+this.input+"&limit="+this.records, Track.class);
+			 Instant endTime = Instant.now(); 
+			 Duration timeElapsed =	 Duration.between(startTime, endTime); 
+			 LOGGER.info("timeElapsed in getting Tracks ms: " + timeElapsed.toMillis());
+			 
 			List<Result> results = track.getResults();
 			results.forEach(result -> {
 				if(!StringUtils.isEmpty(result.getTrackName()) && !StringUtils.isEmpty(result.getArtistName()))
@@ -85,13 +102,15 @@ public class MediaDownloader {
 		}
 	}
 
-	
+	//This is the main method which start processing.
 	public List<Media> go(String input,Integer records) {
-		List<Media> medias = new ArrayList<>(2*records);
-		List<Future<List<Media>>> futures = new ArrayList<>();
+		List<Media> medias = new ArrayList<>(2*records);	//this is final list which will be returned.
+		
+		List<Future<List<Media>>> futures = new ArrayList<>();	//add the both the future tasks
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.BOOK)));
 		futures.add(executor.submit(new Downloader(input,records,MyMediaType.SONG)));
 		
+		//now process future 
 		for (Future<List<Media>> future : futures) {
 			try {
 				List<Media> m = future.get(TIME_FRAME, TimeUnit.NANOSECONDS);
@@ -106,8 +125,9 @@ public class MediaDownloader {
 			}
 		}
 		
-		executor.shutdown();
+		executor.shutdown();	//since all the processing done , stop the executor
 		
+		//finally sort the media and send back to user.
 		return medias.parallelStream().sorted((m1,m2) -> m1.getTitle().compareTo(m2.getTitle())).collect(Collectors.toList());
 	}
 }

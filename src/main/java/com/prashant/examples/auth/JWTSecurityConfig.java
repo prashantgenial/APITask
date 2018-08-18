@@ -17,6 +17,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
     http.csrf().disable().authorizeRequests()
     	.requestMatchers(EndpointRequest.to("health")).permitAll()
         .antMatchers("/").permitAll()
+        .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui","/swagger-ui.html").permitAll()
         .antMatchers(HttpMethod.POST, "/login").permitAll()
         .anyRequest().authenticated()
         .and()

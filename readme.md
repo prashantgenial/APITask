@@ -1,5 +1,3 @@
-Currently this project in development 
-
 Following are the task that we are achiving in this Project:
 
 1 - build a service, that will accept a request with text parameter on input.
@@ -18,9 +16,9 @@ API
 	 - Your service needs to respond within 3 seconds. [Multithreading with callable interface]
  
 Make sure the service:
-8 - is self-documenting [Add Swagger]
-9 - exposes metrics on response times for upstream services
-10 - exposes health check [Add accuator]
+8 - is self-documenting [Added Swagger]
+9 - exposes metrics on response times for upstream services [As of now added logs later on we can integrate ELK for monitoring]
+10 - exposes health check [Added accuator]
 11 - Limit of results on upstream services must be configurable per environment and preconfigured to 5. [Add in Application.properties]
 12 - Add the security mechanism to authenticate and authorize the service for added security. [JWT Token]
 13 - document how we can run it. [GIT]

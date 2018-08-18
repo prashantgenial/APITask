@@ -15,16 +15,15 @@ API
 7 - Results originating from one upstream service (and its stability / performance) may not affect the results originating from the other upstream service.
 	 - Your service needs to respond within 3 seconds. [Multithreading with callable interface]
  
-Make sure the service:
-8 - is self-documenting [Added Swagger]
-9 - exposes metrics on response times for upstream services [As of now added logs later on we can integrate ELK for monitoring]
-10 - exposes health check [Added accuator]
-11 - Limit of results on upstream services must be configurable per environment and preconfigured to 5. [Add in Application.properties]
-12 - Add the security mechanism to authenticate and authorize the service for added security. [JWT Token]
-13 - document how we can run it. [GIT]
-14 - document your justification of technology / mechanism choice.
-
-15- The stability of the downstream service may not be affected by the stability of the upstream services.
+Make sure the service:<br />
+8 - is self-documenting [Added Swagger]<br />
+9 - exposes metrics on response times for upstream services [As of now added logs later on we can integrate ELK for monitoring]<br />
+10 - exposes health check [Added accuator]<br />
+11 - Limit of results on upstream services must be configurable per environment and preconfigured to 5. [Add in Application.properties]<br />
+12 - Add the security mechanism to authenticate and authorize the service for added security. [JWT Token]<br />
+13 - document how we can run it. [GIT]<br />
+14 - document your justification of technology / mechanism choice.<br />
+15- The stability of the downstream service may not be affected by the stability of the upstream services.<br />
 
 <strong>Software</strong><br />
 The software details used by the API Task Application are listed below:<br /><br />

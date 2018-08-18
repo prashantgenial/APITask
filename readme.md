@@ -26,40 +26,15 @@ Make sure the service:
 13 - document how we can run it. [GIT]
 14 - document your justification of technology / mechanism choice.
 
+15- The stability of the downstream service may not be affected by the stability of the upstream services.
 
-The stability of the downstream service may not be affected by the stability of the upstream services.
+<strong>Software</strong><br />
+The software details used by the API Task Application are listed below:<br /><br />
+1.	<strong>Spring Boot</strong>  : Framework<br />
+2.	<strong>Swagger</strong> : API for automatic documentation of API<br />
+3.	<strong>Java 1.8 64 bit</strong> <br />
+4.	<strong>Git</strong> : Source Code Repository<br />
+5.	<strong>Postman</strong> : for simulation of service<br />
+6. <strong>Maven</strong><br /><br />
 
-How to run this project:
-
-1.
-clone the project : either download the project by clicking clone/download button  
-OR open git bash (if git is installed on your machine) git clone https://github.com/prashantgenial/APITask
-
-2. open a command prompt and go to the root directory project
-3. compile "mvn clean package"
-4. run "java -jar target/APITask-0.0.1-SNAPSHOT.jar"
-or
-run "java -jar target/APITask-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev"
-
-6. open postman and run below URL
-
-http://localhost:9191/media?input=road
-
-Response recieved :
-
-{
-    "timestamp": "2018-08-16T09:40:51.013+0000",
-    "status": 403,
-    "error": "Forbidden",
-    "message": "Access Denied",
-    "path": "/media"
-}
-
-this service is accessible a secure token only, so first lets generate a token.
-6.
-To Access the Health Status of the API:
-http://localhost:9191/actuator/health
-
-POST localhost:9191/login
-{"username":"admin","password":"password"} 
-
+for Installing and running this project , please look at the <strong>Install and rund.docx</strong> in this repository
